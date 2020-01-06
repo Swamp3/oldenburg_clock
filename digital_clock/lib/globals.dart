@@ -1,4 +1,5 @@
 library ol_clock.globals;
+
 import 'package:flutter/material.dart';
 
-Map colors = new Map();
+Map<String, Color> colors = {"text": Colors.white, "background": Colors.black};

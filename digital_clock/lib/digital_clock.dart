@@ -19,7 +19,6 @@ final _darkTheme = {
   _Element.background: Colors.black,
   _Element.text: Colors.white,
 };
-
 final _lightTheme = {
   _Element.background: Colors.white,
   _Element.text: Colors.black,
@@ -73,7 +72,7 @@ class _DigitalClockState extends State<DigitalClock> {
   void _updateWeatcherContitionIcon(String condition) {
     // define common icon style variables
     var iconSize = 50.0;
-    var iconColor = Colors.white;
+    var iconColor = globals.colors['text'];
     switch (condition) {
       case 'cloudy':
         _weatherIcon = Icon(
@@ -172,15 +171,15 @@ class _DigitalClockState extends State<DigitalClock> {
   }
 
   void setLightTheme() {
-    globals.colors["text"] = Colors.white;
-    globals.colors["background"] = Colors.black;
+    globals.colors["text"] = Colors.black;
+    globals.colors["background"] = Colors.white;
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors = MediaQuery.of(context).platformBrightness == Brightness.light
-        ? setLightTheme()
-        : setLightTheme();
+    if (MediaQuery.of(context).platformBrightness == Brightness.light) {
+      setLightTheme();
+    }
 
     final hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
@@ -188,12 +187,12 @@ class _DigitalClockState extends State<DigitalClock> {
     final fontSize = MediaQuery.of(context).size.width / 6;
     final secondFontSize = fontSize / 5;
     final defaultStyle = TextStyle(
-      color: globals.colors["text"],
+      color: globals.colors['text'],
       fontFamily: 'Oldenburg',
       fontSize: fontSize,
     );
     final secondTextStyle = TextStyle(
-      color: globals.colors["text"],
+      color: globals.colors['text'],
       fontFamily: 'Oldenburg',
       fontSize: secondFontSize,
     );
@@ -283,7 +282,7 @@ class _DigitalClockState extends State<DigitalClock> {
     ]));
 
     return Container(
-      color: globals.colors["background"],
+      color: globals.colors['background'],
       child: Center(
           child: Column(children: [
         Expanded(flex: 3, child: timeRow),
