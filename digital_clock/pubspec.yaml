@@ -1,6 +1,6 @@
-name: digital_clock
-description: Digital clock.
-version: 1.0.0+1
+name: melmo_oldenburg_clock
+description: Melmo Oldenburg Digital clock.
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -19,6 +19,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: PressStart2P
+    - family: Oldenburg
       fonts:
-        - asset: third_party/PressStart2P-Regular.ttf
+        - asset: assets/fonts/Oldenburg-Regular.ttf

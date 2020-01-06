@@ -8,10 +8,13 @@ import 'package:flutter_clock_helper/customizer.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'globals.dart' as globals;
 
 import 'digital_clock.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   // A temporary measure until Platform supports web and TargetPlatform supports
   // macOS.
   if (!kIsWeb && Platform.isMacOS) {
@@ -31,4 +34,5 @@ void main() {
   // Your job is to edit [DigitalClock], or replace it with your
   // own clock widget. (Look in digital_clock.dart for more details!)
   runApp(ClockCustomizer((ClockModel model) => DigitalClock(model)));
+  SystemChrome.setEnabledSystemUIOverlays([]);
 }
