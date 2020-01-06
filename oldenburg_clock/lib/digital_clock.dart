@@ -56,12 +56,11 @@ class _DigitalClockState extends State<DigitalClock> {
   void _updateWeatcherContitionIcon(String condition) {
     // define common icon style variables
     var iconSize = globals.textSize * .6;
-    var iconColor = globals.colors['text'];
     switch (condition) {
       case 'cloudy':
         _weatherIcon = Icon(
           Icons.wb_cloudy,
-          color: iconColor,
+          color: Colors.lightBlue,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -69,7 +68,7 @@ class _DigitalClockState extends State<DigitalClock> {
       case 'foggy':
         _weatherIcon = Icon(
           Icons.texture,
-          color: iconColor,
+          color: Colors.lightBlue,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -77,7 +76,7 @@ class _DigitalClockState extends State<DigitalClock> {
       case 'rainy':
         _weatherIcon = Icon(
           Icons.grain,
-          color: iconColor,
+          color: Colors.blue,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -85,7 +84,7 @@ class _DigitalClockState extends State<DigitalClock> {
       case 'snowy':
         _weatherIcon = Icon(
           Icons.ac_unit,
-          color: iconColor,
+          color: Colors.grey,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -93,7 +92,7 @@ class _DigitalClockState extends State<DigitalClock> {
       case 'sunny':
         _weatherIcon = Icon(
           Icons.wb_sunny,
-          color: iconColor,
+          color: Colors.yellow,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -101,7 +100,7 @@ class _DigitalClockState extends State<DigitalClock> {
       case 'thunderstorm':
         _weatherIcon = Icon(
           Icons.flash_on,
-          color: iconColor,
+          color: Colors.yellow,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -109,7 +108,7 @@ class _DigitalClockState extends State<DigitalClock> {
       case 'windy':
         _weatherIcon = Icon(
           Icons.toys,
-          color: iconColor,
+          color: Colors.blue,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -117,7 +116,7 @@ class _DigitalClockState extends State<DigitalClock> {
       default:
         _weatherIcon = Icon(
           Icons.help_outline,
-          color: iconColor,
+          color: Colors.red,
           size: iconSize,
           semanticLabel: "${globals.semantics['weather']} $_condition",
         );
@@ -164,16 +163,17 @@ class _DigitalClockState extends State<DigitalClock> {
     if (MediaQuery.of(context).platformBrightness == Brightness.light) {
       setLightTheme();
     }
+
     final hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
     final minute = DateFormat('mm').format(_dateTime);
-    globals.textSize = MediaQuery.of(context).size.width / 6;
+    globals.textSize = MediaQuery.of(context).size.width / 5;
     final defaultStyle = TextStyle(
       color: globals.colors['text'],
       fontFamily: globals.defaultFont,
       fontSize: globals.textSize,
     );
-    final smallTextStyle = defaultStyle.apply(fontSizeFactor: .2);
+    final smallTextStyle = defaultStyle.apply(fontSizeFactor: .15);
 
     final timeRow = Container(
         child: Row(children: [
