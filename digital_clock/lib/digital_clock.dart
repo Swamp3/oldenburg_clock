@@ -1,6 +1,7 @@
 // Copyright 2019 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+// Modified by Timo Alts <timo.alts+flutterclock@gmail.com> 06.01.2020
 
 import 'dart:async';
 
@@ -9,24 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'globals.dart' as globals;
 
-enum _Element {
-  background,
-  text,
-  shadow,
-}
-
-final _darkTheme = {
-  _Element.background: Colors.black,
-  _Element.text: Colors.white,
-};
-final _lightTheme = {
-  _Element.background: Colors.white,
-  _Element.text: Colors.black,
-};
-
 /// A basic digital clock.
-///
-/// You can do better than this!
 class DigitalClock extends StatefulWidget {
   const DigitalClock(this.model);
 
@@ -71,7 +55,7 @@ class _DigitalClockState extends State<DigitalClock> {
 
   void _updateWeatcherContitionIcon(String condition) {
     // define common icon style variables
-    var iconSize = 50.0;
+    var iconSize = globals.textSize * .6;
     var iconColor = globals.colors['text'];
     switch (condition) {
       case 'cloudy':
@@ -79,7 +63,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.wb_cloudy,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       case 'foggy':
@@ -87,7 +71,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.texture,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       case 'rainy':
@@ -95,7 +79,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.grain,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       case 'snowy':
@@ -103,7 +87,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.ac_unit,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       case 'sunny':
@@ -111,7 +95,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.wb_sunny,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       case 'thunderstorm':
@@ -119,7 +103,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.flash_on,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       case 'windy':
@@ -127,7 +111,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.toys,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is $_condition',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
         break;
       default:
@@ -135,7 +119,7 @@ class _DigitalClockState extends State<DigitalClock> {
           Icons.help_outline,
           color: iconColor,
           size: iconSize,
-          semanticLabel: 'weather condition is unknown',
+          semanticLabel: "${globals.semantics['weather']} $_condition",
         );
     }
   }
@@ -180,22 +164,16 @@ class _DigitalClockState extends State<DigitalClock> {
     if (MediaQuery.of(context).platformBrightness == Brightness.light) {
       setLightTheme();
     }
-
     final hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
     final minute = DateFormat('mm').format(_dateTime);
-    final fontSize = MediaQuery.of(context).size.width / 6;
-    final secondFontSize = fontSize / 5;
+    globals.textSize = MediaQuery.of(context).size.width / 6;
     final defaultStyle = TextStyle(
       color: globals.colors['text'],
-      fontFamily: 'Oldenburg',
-      fontSize: fontSize,
+      fontFamily: globals.defaultFont,
+      fontSize: globals.textSize,
     );
-    final secondTextStyle = TextStyle(
-      color: globals.colors['text'],
-      fontFamily: 'Oldenburg',
-      fontSize: secondFontSize,
-    );
+    final smallTextStyle = defaultStyle.apply(fontSizeFactor: .2);
 
     final timeRow = Container(
         child: Row(children: [
@@ -203,7 +181,10 @@ class _DigitalClockState extends State<DigitalClock> {
         child: DefaultTextStyle(
           style: defaultStyle,
           child: Center(
-            child: Text(hour[0]),
+            child: Text(
+              hour[0],
+              semanticsLabel: "${globals.semantics['hour']} $hour",
+            ),
           ),
         ),
       ),
@@ -227,7 +208,10 @@ class _DigitalClockState extends State<DigitalClock> {
         child: DefaultTextStyle(
           style: defaultStyle,
           child: Center(
-            child: Text(minute[0]),
+            child: Text(
+              minute[0],
+              semanticsLabel: "${globals.semantics['minute']} $minute",
+            ),
           ),
         ),
       ),
@@ -246,39 +230,37 @@ class _DigitalClockState extends State<DigitalClock> {
       Expanded(
         flex: 2,
         child: DefaultTextStyle(
-          style: secondTextStyle,
+          style: smallTextStyle,
           child: Center(
               child: Padding(
-            padding: EdgeInsets.only(left: 12.0),
-            child: Text(_location),
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              _location,
+              semanticsLabel: "${globals.semantics['location']} $_location",
+            ),
           )),
         ),
       ),
-
       Expanded(
         child: DefaultTextStyle(
-          style: secondTextStyle,
+          style: smallTextStyle,
           child: Center(
-              child: Container(
             child: _weatherIcon,
-          )),
+          ),
         ),
       ),
       Expanded(
         child: DefaultTextStyle(
-          style: secondTextStyle,
+          style: smallTextStyle,
           child: Center(
-              child: Container(
-            child: Text(_temperature),
-          )),
+            child: Text(
+              _temperature,
+              semanticsLabel:
+                  "${globals.semantics['temperature']} $_temperature",
+            ),
+          ),
         ),
       ),
-      // Container(
-      //   child: DefaultTextStyle(
-      //       style: secondTextStyle,
-      //       child: Container(
-      //           alignment: Alignment.topRight, child: Text(second))),
-      // ),
     ]));
 
     return Container(
